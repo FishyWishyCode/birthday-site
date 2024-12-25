@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Marissa!</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Adding Confetti JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        .heart-shape {
+            width: 200px; /* Adjust width as needed */
+            height: 200px; /* Adjust height as needed */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            clip-path: path('M 100,30 A 70,70 0 0,1 170,100 L 100,170 L 30,100 A 70,70 0 0,1 100,30 Z');
+            overflow: hidden;
+        }
+
+        .heart-shape img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .gallery {
+            display: flex;
+            gap: 20px; /* Space between images */
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            position: relative;
+            width: 200px; /* Adjust width as needed */
+            height: 200px; /* Adjust height as needed */
+        }
+
+        .flip-card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .flip-card-front {
+            background-color: #fff;
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+
+        .flip-card-back {
+            background-color: #f1f1f1;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .flip-card.clicked .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Additional styles for animation */
+        .intro button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Button to start the confetti and reveal content -->
+    <div class="intro">
+        <button id="start-button">🎁</button>
+    </div>
+
+    <!-- Hidden content until the button is clicked -->
+    <div id="birthday-content" class="container" style="display: none;">
+        <header>
+            <h1>Happy Birthday, Marissa!</h1>
+        </header>
+        
+        <section class="message">
+            <p>Hey Marissa,</p>
+            <p>I hope you have an amazing birthday! You mean the whole freaking world to me, and I want you to know it 🥰 Thanks for everything, and you always deserve to be celebrated!</p>
+        </section>
+
+        <section class="photos">
+            <h2>Memories</h2>
+            <div class="gallery">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="heart-shape">
+                                <img src="Dope_phots.gif" alt="Memory 1">
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>This is a cool moment from our memories!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="heart-shape">
+                                <img src="Homie_dancing.gif" alt="Memory 2">
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Remember this dance? It was epic!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="heart-shape">
+                                <img src="hug-mark-grayson.gif" alt="Memory 3">
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Here's a hug that says it all!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="video">
+            <h2>Your Birthday Video!</h2>
+            <video controls>
+                <source src="birthday-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+
+        <footer>
+            <p>With love, from all your friends ❤️</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript to trigger confetti and flip effect -->
+    <script>
+        let runCount = 0; // To track the number of movements
+
+        document.getElementById('start-button').addEventListener('click', function() {
+            if (runCount < 3) {
+                moveButton();
+                runCount++;
+            } else {
+                // Confetti effect after the button stops running
+                confettiEffect();
+
+                // Hide the button and show the birthday content
+                document.querySelector('.intro').style.display = 'none';
+                document.getElementById('birthday-content').style.display = 'block';
+            }
+        });
+
+        // Function to move the button randomly
+        function moveButton() {
+            const button = document.getElementById('start-button');
+
+            // Generate random positions for the button to "run" to
+            const randomX = Math.floor(Math.random() * (window.innerWidth - 200)); // Random X position
+            const randomY = Math.floor(Math.random() * (window.innerHeight - 100)); // Random Y position
+
+            // Move the button to random positions
+            button.style.position = 'absolute';
+            button.style.top = randomY + 'px';
+            button.style.left = randomX + 'px';
+
+            // Add funny "run-away" animation
+            button.style.transition = 'top 0.5s ease, left 0.5s ease';
+        }
+
+        // Function to trigger confetti after the button stops moving
+        function confettiEffect() {
+            var duration = 5 * 1000; // 5 seconds
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // Flip effect for the photos
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('clicked');
+            });
+        });
+    </script>
+
+</body>
+</html>
