@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday, Marissa!</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.0">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Pacifico&display=swap" rel="stylesheet">
 </head>
@@ -16,7 +16,7 @@
     <div id="birthday-content" class="container" style="display: none;">
         <header class="fade-in">
             <h1>
-                <img src="tulipscrying-removebg-preview.png"Tulip" class="tulip"> <!-- Tulip at the start -->
+                <img src="tulipscrying-removebg-preview.png"Tulip class="tulip"> <!-- Tulip at the start -->
                 Happy Birthday, Marissa!
                 <img src="tulipscrying-removebg-preview.png" alt="Tulip" class="tulip flip"> <!-- Tulip at the end -->
             </h1>
@@ -95,30 +95,40 @@
 
     <script>
         let runCount = 0;
+let pressCount = 0;
 
-        document.getElementById('start-button').addEventListener('click', function () {
-            if (runCount < 3) {
-                moveButton();
-                runCount++;
-            } else {
-                confettiEffect();
-                document.querySelector('.intro').style.display = 'none';
-                document.getElementById('birthday-content').style.display = 'block';
-            }
-        });
+document.getElementById('start-button').addEventListener('click', function () {
+    pressCount++;  // Increment the pressCount on each click
 
-        function moveButton() {
-            const button = document.getElementById('start-button');
-            const randomX = Math.floor(Math.random() * (window.innerWidth - 200));
-            const randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+    // First 3 clicks: Move the button
+    if (runCount < 3) {
+        moveButton();
+        runCount++;
+    } else {
+        // After 3 clicks: Show confetti and transition to birthday content
+        confettiEffect();
+        document.querySelector('.intro').style.display = 'none';
+        document.getElementById('birthday-content').style.display = 'block';
+    }
 
-            button.style.position = 'absolute';
-            button.style.top = randomY + 'px';
-            button.style.left = randomX + 'px';
-            button.style.transition = 'top 0.5s ease, left 0.5s ease';
-        }
+    // If the button is pressed 4 times, show the message
+    if (pressCount === 4) {
+        showMessage();
+    }
+});
 
-        function confettiEffect() {
+function moveButton() {
+    const button = document.getElementById('start-button');
+    const randomX = Math.floor(Math.random() * (window.innerWidth - 200));
+    const randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+
+    button.style.position = 'absolute';
+    button.style.top = randomY + 'px';
+    button.style.left = randomX + 'px';
+    button.style.transition = 'top 0.5s ease, left 0.5s ease';
+}
+
+function confettiEffect() {
     var duration = 5 * 1000;
     var end = Date.now() + duration;
     (function frame() {
@@ -149,39 +159,7 @@ function startFloatingHeartsAndStars() {
     floatingElements.style.opacity = 1; // Make sure floating elements are visible
 }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const fadeElements = document.querySelectorAll('.fade-in');
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
-                        observer.unobserve(entry.target);  // Stop observing once the element is in view
-                    }
-                });
-            }, {
-                threshold: 0.5 // Trigger when 50% of the element is visible
-            });
-
-            fadeElements.forEach(element => {
-                observer.observe(element);
-            });
-        });
-
-        document.querySelectorAll('.flip-card').forEach(card => {
-            card.addEventListener('click', function () {
-                this.classList.toggle('clicked');
-            });
-        });
-        let pressCount = 0;
-
-document.getElementById("start-button").addEventListener("click", function() {
-    pressCount++;
-    if (pressCount === 4) {
-        showMessage();
-    }
-});
-
+// Function to show a custom message after the button has been pressed 4 times
 function showMessage() {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("custom-message");
@@ -192,6 +170,7 @@ function showMessage() {
     `;
     document.body.appendChild(messageDiv);
 }
+
 
     </script>
 </body>
